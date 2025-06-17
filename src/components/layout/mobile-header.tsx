@@ -1,5 +1,7 @@
 "use client"
 
+import { Sparkles } from "lucide-react"
+import { SimpleIcon } from "../ui/provider-icons"
 import { MobileSidebar } from "./mobile-sidebar"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
 
@@ -13,10 +15,12 @@ export function MobileHeader({ title }: MobileHeaderProps) {
       <div className="flex items-center space-x-3">
         <MobileSidebar />
         <div className="flex items-center space-x-2">
-          <div className="w-6 h-6 bg-brand-600 rounded flex items-center justify-center">
-            <div className="w-3 h-3 bg-white rounded-sm"></div>
-          </div>
           <h1 className="text-lg font-semibold">{title}</h1>
+          <SimpleIcon
+            icon={Sparkles}
+            className="w-6 h-6 text-brand-500"
+            alt="Sparkles Icon"
+          />
         </div>
       </div>
       <ThemeToggle />

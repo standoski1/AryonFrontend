@@ -1,8 +1,6 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import React, { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/auth-context"
 import { Button } from "@/components/ui/button"
@@ -10,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card" 
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import Image from "next/image"
 
 export default function LoginPage() {
   const [username, setUsername] = useState("")
@@ -43,9 +42,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <div className="w-12 h-12 bg-brand-600 rounded-lg flex items-center justify-center">
-              <div className="w-6 h-6 bg-white rounded-sm"></div>
-            </div>
+            <Image src="/logo.png" width={50} height={40} alt="logo" />
           </div>
           <CardTitle className="text-2xl font-bold">ARYON Enterprise</CardTitle>
           <CardDescription>Sign in to your account</CardDescription>

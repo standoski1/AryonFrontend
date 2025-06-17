@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback, useRef } from "react"
-import type { Recommendation, RecommendationsResponse, AvailableTags } from "@/types"
+import type { Recommendation, AvailableTags } from "@/types"
 import { useAuth } from "@/contexts/auth-context"
 import { useFilters } from "@/contexts/filter-context"
 import { API_URL } from "@/lib/config"
@@ -47,11 +47,11 @@ export function useRecommendations(isArchived = false) {
           params.append("tags", tags.join(","))
         }
 
-        if (isArchived) {
-          params.append("archived", "true")
-        }
+        const endpoint = isArchived
+          ? `${API_URL}/recommendations/archive?${params.toString()}`
+          : `${API_URL}/recommendations?${params.toString()}`;
 
-        const response = await fetch(`${API_URL}/recommendations?${params.toString()}`, {
+        const response = await fetch(endpoint, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
@@ -61,22 +61,21 @@ export function useRecommendations(isArchived = false) {
           throw new Error("Failed to fetch recommendations")
         }
 
-        const data: RecommendationsResponse = await response.json()
+        const data = await response.json()
 
         if (reset) {
           setRecommendations(data.data)
         } else {
-          // Ensure unique recommendations by using a Map with recommendationId as key
           const uniqueRecommendations = new Map(
             [...recommendations, ...data.data].map(rec => [rec.recommendationId, rec])
           )
           setRecommendations(Array.from(uniqueRecommendations.values()))
         }
 
-        setHasMore(!!data.pagination.cursor.next)
-        setCursor(data.pagination.cursor.next)
-        setTotalItems(data.pagination.totalItems)
-        setAvailableTags(data.availableTags)
+        setHasMore(!!(data.pagination && data.pagination.cursor && data.pagination.cursor.next))
+        setCursor(data.pagination && data.pagination.cursor ? data.pagination.cursor.next : null)
+        setTotalItems(data.pagination && typeof data.pagination.totalItems === 'number' ? data.pagination.totalItems : 0)
+        setAvailableTags(data.availableTags || { frameworks: [], reasons: [], providers: [], classes: [] })
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred")
       } finally {

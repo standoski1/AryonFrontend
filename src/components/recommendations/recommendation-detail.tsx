@@ -3,15 +3,12 @@
 import type { Recommendation } from "@/types"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { X, Archive, ExternalLink } from "lucide-react"
+import { X, Archive, ExternalLink, Box, BookOpenText, OctagonAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { PROVIDERS, RECOMMENDATION_CLASSES } from "@/types"
 import {
   TriangleIcon,
   MultiCubeIcon,
-  BookIcon,
-  LockIcon,
-  ClipboardIcon,
   BarChartIcon,
 } from "@/components/ui/provider-icons"
 
@@ -23,25 +20,6 @@ interface RecommendationDetailProps {
   isArchived?: boolean
 }
 
-const getClassIcon = (classId: number) => {
-  switch (classId) {
-    case 1:
-      return MultiCubeIcon // COMPUTE
-    case 2:
-      return MultiCubeIcon // NETWORKING
-    case 3:
-      return LockIcon // DATA_PROTECTION
-    case 4:
-      return ClipboardIcon // APPLICATION
-    case 5:
-      return LockIcon // AUTHENTICATION
-    case 6:
-      return BookIcon // COMPLIANCE
-    default:
-      return MultiCubeIcon // Use the multi-cube icon as default
-  }
-}
-
 export function RecommendationDetail({
   recommendation,
   onClose,
@@ -50,12 +28,10 @@ export function RecommendationDetail({
   isArchived = false,
 }: RecommendationDetailProps) {
   const getValueScoreBars = (score: number) => {
-    // Convert score (0-100) to number of filled bars (0-4)
     const filledBars = Math.round((score / 100) * 4)
     return Array.from({ length: 4 }, (_, i) => i < filledBars)
   }
 
-  const ClassIcon = getClassIcon(recommendation.class)
   const classInfo = RECOMMENDATION_CLASSES[recommendation.class]
 
   return (
@@ -64,13 +40,13 @@ export function RecommendationDetail({
       <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />
 
       {/* Detail Panel */}
-      <div data-testid="recommendation-detail" className="fixed inset-y-0 right-0 w-full md:w-[480px] bg-background shadow-2xl border-l border-border z-50 overflow-y-auto">
+      <div data-testid="recommendation-detail" className="fixed inset-y-0 right-0 w-full md:w-[680px] bg-[#ffffff] dark:bg-[#101318] shadow-2xl border-l border-border z-50 overflow-y-auto">
         <div className="p-4 md:p-6">
           {/* Header - Multi-Cube Icon */}
           <div className="flex items-start justify-between mb-6">
             <div className="flex items-center space-x-3 flex-1">
               <div className="w-10 h-10 md:w-12 md:h-12 bg-brand-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                <MultiCubeIcon className="w-5 h-5 md:w-6 md:h-6 text-white" alt="Recommendation Detail" />
+                <MultiCubeIcon className="w-8 h-10 text-white" alt="Recommendation Detail" />
               </div>
               <div className="flex-1 min-w-0">
                 <h2 className="text-base md:text-lg font-semibold text-foreground mb-1">{recommendation.title}</h2>
@@ -81,7 +57,7 @@ export function RecommendationDetail({
                       {getValueScoreBars(recommendation.score).map((filled, index) => (
                         <div
                           key={index}
-                          className={cn("w-2 h-2 md:w-2 md:h-3 rounded-sm", filled ? "bg-brand-500" : "bg-muted")}
+                          className={cn("w-3 h-2 md:w-2 md:h-3 rounded-[2px]", filled ? "bg-brand-400" : "bg-muted")}
                         />
                       ))}
                     </div>
@@ -140,7 +116,7 @@ export function RecommendationDetail({
           {/* Affected Resources */}
           <div className="mb-6">
             <div className="flex items-center space-x-2 mb-3">
-              <MultiCubeIcon className="w-4 h-4 text-muted-foreground" alt="Resources" />
+              <Box/>
               <h3 className="text-sm font-medium text-foreground">Affected Resources</h3>
             </div>
             <div className="ml-6 space-y-1">
@@ -155,7 +131,7 @@ export function RecommendationDetail({
           {/* Reasons */}
           <div className="mb-6">
             <div className="flex items-center space-x-2 mb-3">
-              <MultiCubeIcon className="w-4 h-4 text-muted-foreground" alt="Reasons" />
+              <Box/>
               <h3 className="text-sm font-medium text-foreground">Reasons</h3>
             </div>
             <div className="ml-6 flex flex-wrap gap-2">
@@ -175,38 +151,41 @@ export function RecommendationDetail({
             </div>
 
             <div className="ml-6 space-y-4">
-              {/* Headers */}
-              <div className="flex items-center justify-between text-xs text-muted-foreground uppercase tracking-wide">
-                <div className="flex items-center space-x-2">
-                  <span>Overall</span>
-                  <div className="w-4 h-4 rounded-full bg-muted flex items-center justify-center">
-                    <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground"></div>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span>Most impacted scope</span>
-                  <TriangleIcon className="w-4 h-4 text-muted-foreground" alt="Warning" />
-                </div>
-              </div>
 
               {/* Violation Cards with Background and Border */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-muted/30 border border-border rounded-lg p-4">
-                  <p className="text-sm font-medium text-foreground mb-1">Violations</p>
-                  <p className="text-3xl font-bold text-foreground">
-                    {recommendation.impactAssessment.totalViolations}
-                  </p>
+                  <div className="flex items-center space-x-2 justify-between">
+                    <span>Overall</span>
+                    <div className="w-4 h-4 rounded-full bg-muted flex items-center justify-center">
+                      <OctagonAlert/>
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center justify-between">
+                    <p className="text-xl font-bold text-foreground mb-1">Violations</p>
+                    <p className="text-3xl font-bold text-foreground">
+                      {recommendation.impactAssessment.totalViolations}
+                    </p>
+                  </div>
                 </div>
                 <div className="bg-muted/30 border border-border rounded-lg p-4">
-                  <p className="text-sm font-medium text-foreground mb-1">
+                  <div className="flex items-center space-x-2 justify-between">
+                    <span>Most impacted scope</span>
+                    <TriangleIcon className="w-4 h-4 text-muted-foreground" alt="Warning" />
+                  </div>
+                  <div className="flex flex-row items-start justify-between">
+                    <div>
+                    <p className="text-xl font-bold text-foreground mb-1">
                     {recommendation.impactAssessment.mostImpactedScope.name}
-                  </p>
-                  <p className="text-xs text-muted-foreground mb-2">
-                    ({recommendation.impactAssessment.mostImpactedScope.type})
-                  </p>
-                  <p className="text-3xl font-bold text-foreground">
-                    {recommendation.impactAssessment.mostImpactedScope.count}
-                  </p>
+                    </p>
+                    <p className="text-xs text-muted-foreground mb-2">
+                      ({recommendation.impactAssessment.mostImpactedScope.type})
+                    </p>
+                    </div>
+                    <p className="text-3xl font-bold text-foreground">
+                      {recommendation.impactAssessment.mostImpactedScope.count}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -215,7 +194,7 @@ export function RecommendationDetail({
           {/* Further Reading */}
           <div className="mb-8">
             <div className="flex items-center space-x-2 mb-3">
-              <BookIcon className="w-4 h-4 text-muted-foreground" alt="Reading" />
+              <BookOpenText />
               <h3 className="text-sm font-medium text-foreground">Further Reading</h3>
             </div>
             <div className="ml-6 space-y-2">

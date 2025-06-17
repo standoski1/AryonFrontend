@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -8,15 +8,31 @@ import { Menu } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { DashboardIcon, StarIcon, PoliciesIcon, EventsIcon, WaiversIcon } from "@/components/ui/provider-icons"
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
+import { SimpleIcon } from "@/components/ui/provider-icons"
+import Image from "next/image"
+import { LayoutDashboard, Sparkles, ClipboardList, FileSearch2, OctagonAlert, type LucideIcon } from "lucide-react"
 
-const navigation = [
-  { name: "Dashboard", href: "/dashboard", icon: DashboardIcon },
-  { name: "Recommendations", href: "/recommendations", icon: StarIcon },
-  { name: "Policies", href: "/policies", icon: PoliciesIcon },
-  { name: "Events", href: "/events", icon: EventsIcon },
-  { name: "Waivers", href: "/waivers", icon: WaiversIcon },
+interface NavigationItem {
+  name: string
+  href: string
+  icon:
+    | LucideIcon
+    | {
+        lucideIcon?: LucideIcon
+        customSvg?: React.ReactNode
+        imageSrc?: string
+        imageWidth?: number
+        imageHeight?: number
+      }
+}
+
+const navigation: NavigationItem[] = [
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Recommendations", href: "/recommendations", icon: Sparkles },
+  { name: "Policies", href: "/policies", icon: ClipboardList },
+  { name: "Events", href: "/events", icon: FileSearch2 },
+  { name: "Waivers", href: "/waivers", icon: OctagonAlert },
 ]
 
 export function MobileSidebar() {
@@ -33,13 +49,12 @@ export function MobileSidebar() {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="w-64 p-0">
+        <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
         <div className="flex flex-col h-full bg-background">
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-border">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center">
-                <div className="w-4 h-4 bg-white rounded-sm"></div>
-              </div>
+              <Image src="/logo.png" width={50} height={40} alt="logo" />
               <div>
                 <h1 className="text-xl font-bold">ARYON</h1>
                 <p className="text-sm text-muted-foreground">Enterprise</p>
@@ -56,7 +71,7 @@ export function MobileSidebar() {
             <nav className="space-y-1">
               {navigation.map((item) => {
                 const isActive = pathname.startsWith(item.href)
-                const IconComponent = item.icon
+
                 return (
                   <Link
                     key={item.name}
@@ -65,13 +80,14 @@ export function MobileSidebar() {
                     className={cn(
                       "group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors",
                       isActive
-                        ? "bg-brand-100 text-brand-700 dark:bg-brand-900 dark:text-brand-300"
+                        ? "bg-brand-100 text-brand-700 dark:bg-accent dark:text-brand-900"
                         : "text-foreground hover:bg-accent hover:text-accent-foreground",
                     )}
                   >
-                    <IconComponent
+                    <SimpleIcon
+                      icon={item.icon}
                       className={cn(
-                        "mr-3 h-5 w-5 flex-shrink-0",
+                        "mr-3 h-5 w-5 flex-shrink-0 transition-colors",
                         isActive ? "text-brand-500" : "text-muted-foreground group-hover:text-foreground",
                       )}
                       alt={item.name}
@@ -88,11 +104,11 @@ export function MobileSidebar() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-brand-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
-                  YL
+                  ES
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium">Yair Lad</p>
-                  <p className="text-xs text-muted-foreground">yair@aryon.security</p>
+                  <p className="text-sm font-medium">Ezihe Stanley</p>
+                  <p className="text-xs text-muted-foreground">ezihestanley@gmail.com</p>
                 </div>
               </div>
             </div>

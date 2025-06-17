@@ -16,9 +16,10 @@ interface SearchFilterProps {
   availableTags: AvailableTags
   onSearch: (query: string) => void
   totalResults: number
+  currentCount: number
 }
 
-export function SearchFilter({ availableTags, onSearch, totalResults }: SearchFilterProps) {
+export function SearchFilter({ availableTags, onSearch, totalResults, currentCount }: SearchFilterProps) {
   const { filters, updateFilters, clearFilters } = useFilters()
   const [searchQuery, setSearchQuery] = useState(filters.search)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
@@ -57,8 +58,9 @@ export function SearchFilter({ availableTags, onSearch, totalResults }: SearchFi
   return (
     <div className="space-y-4" data-testid="search-filter">
       {/* Search and Filter Row */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center space-y-2 md:space-y-0 md:space-x-4">
-        <div className="relative flex-1">
+    <div className="flex flex-col md:flex-row items-center justify-between md:space-x-4">
+      <div className="w-[70%] flex flex-col md:flex-row items-stretch md:items-center space-y-2 md:space-y-0 md:space-x-4">
+        <div className="relative md:w-1/3 w-full">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
             data-testid="search-input"
@@ -69,7 +71,7 @@ export function SearchFilter({ availableTags, onSearch, totalResults }: SearchFi
           />
         </div>
 
-        <div className="flex items-center justify-between md:justify-start space-x-4">
+        <div className="flex items-center justify-between space-x-4">
           <DropdownMenu open={isFilterOpen} onOpenChange={setIsFilterOpen}>
             <DropdownMenuTrigger asChild>
               <Button data-testid="filter-button" variant="outline" className="flex items-center space-x-2">
@@ -218,12 +220,14 @@ export function SearchFilter({ availableTags, onSearch, totalResults }: SearchFi
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <div className="text-sm text-muted-foreground whitespace-nowrap">Showing {totalResults} results</div>
+          
         </div>
       </div>
+      <div className="w-[30%] text-sm text-muted-foreground whitespace-nowrap">Showing {currentCount} of {totalResults} results</div>
+    </div>
 
       {/* Active Filters */}
-      {hasActiveFilters && (
+      {/* {hasActiveFilters && (
         <div className="flex flex-wrap gap-2">
           {filters.providers.map((provider) => (
             <Badge key={provider} variant="secondary" className="flex items-center space-x-1">
@@ -273,7 +277,7 @@ export function SearchFilter({ availableTags, onSearch, totalResults }: SearchFi
             </Badge>
           ))}
         </div>
-      )}
+      )} */}
     </div>
   )
 }

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   /* Base colors */
@@ -13,6 +14,7 @@
   --secondary: #f5f5f5;
   --secondary-foreground: #171717;
   --muted: #f5f5f5;
+  --muted-secondary: #bbbaba;
   --muted-foreground: #737373;
   --accent: #f5f5f5;
   --accent-foreground: #171717;
@@ -25,16 +27,16 @@
 
   /* Brand colors - Teal/Turquoise theme */
   --brand-50: #f0fdfa;
-  --brand-100: #ccfbf1;
-  --brand-200: #99f6e4;
-  --brand-300: #5eead4;
-  --brand-400: #2dd4bf;
-  --brand-500: #14b8a6;
-  --brand-600: #0d9488;
-  --brand-700: #0f766e;
-  --brand-800: #115e59;
-  --brand-900: #134e4a;
-  --brand-950: #042f2e;
+  --brand-100: #e1ebee;
+    --brand-200: #91acb4;
+    --brand-300: #6594a2;
+    --brand-400: #5ed9dc;
+    --brand-500: #3090ad;
+    --brand-600: #1aa5cf;
+    --brand-700: #1690b2;
+    --brand-800: #3090ad;
+    --brand-900: #1aa5cf;
+    --brand-950: #25829e;
 }
 
 @theme inline {

@@ -14,16 +14,28 @@ import type { Recommendation } from "@/types"
 import { ArrowLeft, Archive } from "lucide-react"
 import Link from "next/link"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
+import { useToast } from "@/hooks/use-toast"
 
 function ArchiveContent() {
   const { recommendations, loading, error, totalItems, availableTags, archiveRecommendation, unarchiveRecommendation } =
     useRecommendations(true)
 
   const [selectedRecommendation, setSelectedRecommendation] = useState<Recommendation | null>(null)
+  const { toast } = useToast();
 
-  const handleSearch = (query: string) => {
-    // Search is handled by the filter context and useRecommendations hook
+  const handleSearch = () => {
   }
+
+  // Close modal and show toast on unarchive
+  const handleUnarchive = async (id: string) => {
+    await unarchiveRecommendation(id);
+    setSelectedRecommendation(null);
+    toast({
+      title: "Recommendation unarchived",
+      description: "The recommendation has been restored from the archive.",
+      variant: "success",
+    });
+  };
 
   if (error) {
     return (
@@ -37,7 +49,7 @@ function ArchiveContent() {
   }
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-[#f2f3f4] dark:bg-[#1d222a]">
       <Sidebar />
 
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -72,7 +84,7 @@ function ArchiveContent() {
         <div className="flex-1 overflow-auto bg-background">
           <div className="p-4 md:p-6">
             {/* Search and Filter */}
-            <SearchFilter availableTags={availableTags} onSearch={handleSearch} totalResults={totalItems} />
+            <SearchFilter availableTags={availableTags} onSearch={handleSearch} totalResults={totalItems} currentCount={recommendations?.length}/>
 
             {/* Archived Recommendations List */}
             <div className="mt-6 space-y-4">
@@ -81,7 +93,7 @@ function ArchiveContent() {
                   key={recommendation.recommendationId}
                   recommendation={recommendation}
                   onArchive={archiveRecommendation}
-                  onUnarchive={unarchiveRecommendation}
+                  onUnarchive={handleUnarchive}
                   onClick={setSelectedRecommendation}
                   isArchived={true}
                 />
@@ -109,7 +121,7 @@ function ArchiveContent() {
           recommendation={selectedRecommendation}
           onClose={() => setSelectedRecommendation(null)}
           onArchive={archiveRecommendation}
-          onUnarchive={unarchiveRecommendation}
+          onUnarchive={handleUnarchive}
           isArchived={true}
         />
       )}

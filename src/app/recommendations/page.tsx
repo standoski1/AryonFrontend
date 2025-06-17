@@ -15,6 +15,8 @@ import type { Recommendation } from "@/types"
 import { Archive, Plus } from "lucide-react"
 import Link from "next/link"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
+import { Sparkles } from "lucide-react"
+import { SimpleIcon } from "@/components/ui/provider-icons"
 
 function RecommendationsContent() {
   const {
@@ -48,8 +50,7 @@ function RecommendationsContent() {
     [loading, hasMore, loadMore],
   )
 
-  const handleSearch = (query: string) => {
-    // Search is handled by the filter context and useRecommendations hook
+  const handleSearch = () => {
   }
 
   const handleArchive = async (id: string) => {
@@ -84,7 +85,7 @@ function RecommendationsContent() {
   }
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-[#f2f3f4] dark:bg-[#1d222a]">
       <Sidebar />
 
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -95,9 +96,11 @@ function RecommendationsContent() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <h1 className="text-2xl font-semibold text-foreground">Recommendations</h1>
-              <Button variant="outline" size="sm">
-                <Plus className="w-4 h-4 mr-2" />
-              </Button>
+              <SimpleIcon
+                icon={Sparkles}
+                className="w-6 h-6 text-brand-500"
+                alt="Sparkles Icon"
+              />
             </div>
             <div className="flex items-center space-x-2">
               <ThemeToggle />
@@ -115,7 +118,7 @@ function RecommendationsContent() {
         <div className="flex-1 overflow-auto">
           <div className="p-4 md:p-6">
             {/* Search and Filter */}
-            <SearchFilter availableTags={availableTags} onSearch={handleSearch} totalResults={totalItems} />
+        <SearchFilter availableTags={availableTags} onSearch={handleSearch} totalResults={totalItems} currentCount={recommendations?.length}/>
 
             {/* Recommendations List */}
             <div className="mt-6 space-y-4">
