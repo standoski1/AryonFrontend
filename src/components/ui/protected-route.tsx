@@ -1,20 +1,22 @@
 "use client"
 
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { useAuth } from "@/contexts/auth-context"
+import type React from "react"
 
-export default function HomePage() {
+import { useAuth } from "@/contexts/auth-context"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
+
+interface ProtectedRouteProps {
+  children: React.ReactNode
+}
+
+export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, isLoading } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
-    if (!isLoading) {
-      if (user) {
-        router.push("/recommendations")
-      } else {
-        router.push("/login")
-      }
+    if (!isLoading && !user) {
+      router.push("/login")
     }
   }, [user, isLoading, router])
 
@@ -26,5 +28,9 @@ export default function HomePage() {
     )
   }
 
-  return null
+  if (!user) {
+    return null
+  }
+
+  return <>{children}</>
 }
