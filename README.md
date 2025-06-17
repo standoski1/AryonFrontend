@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Aryon snr Frontend Take-home Assignment
 
-## Getting Started
+This is a Next.js frontend take-home assessment.
 
-First, run the development server:
 
-```bash
+## Set up
+Install dependencies
+```shell
+npm install
+```
+Start the project, the app will start on [http://localhost:3000](http://localhost:3000)
+```shell
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+Run tests
+```shell
+npm run test
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Developer
+This project was developed by Ezihe Stanley, a senior frontend developer with extensive experience in designing and implementing innovative solutions across various industries.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Contact
+Email: ezihestanley@gmail.com
+GitHub: Ezihe Stanley
+LinkedIn: Ezihe Stanley
+About the Project
+The Security Rules Management Dashboard is a React-powered web application that provides security teams with an efficient and user-friendly interface to manage, review, and enforce policy rules. Its purpose is to simplify the tracking and implementation of security measures, offering enhanced visibility into potential vulnerabilities while supporting compliance efforts.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Core Features:
+Search and Filter Tools: Locate specific rules easily with comprehensive search and filtering capabilities.
+Rule Insights: Gain detailed insights into security recommendations, including impacts, affected resources, and compliance frameworks.
+High Performance: Handles large datasets seamlessly without compromising performance.
+Modern UI: An intuitive and responsive interface that ensures ease of use for security teams.
+With these features, the dashboard is an essential tool for prioritizing and managing security policies effectively.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Key Features
+1. Dashboard Overview
+Infinite scrolling for recommendations
+Each recommendation displays:
+Title and description
+Risk scores
+Quick archiving option
+Responsive design with error/loading states
+2. Search and Filter System
+Debounced search functionality (300ms delay)
+Real-time updates and "no results" feedback
+3. Detailed Recommendation View
+4. Archive Management
+5. Authentication
+Login with form validation
+Protected routes for secure access
+Persistent authentication state
+Logout functionality
+Technical Requirements
+1. TypeScript
+Fully typed components with strict mode enabled
+Interface and type definitions
+2. State Management
+Redux Toolkit was used
+3. Session Management (Optional)
+Token-based authentication (JWT)
+Automatic session timeout handling
+4. Styling
+Designed using TailwindCSS
+Fully responsive and thematically consistent
+5. Performance Optimization
+Code splitting and lazy loading
+Effective memoization techniques
+Proper management of loading states
+6. Testing
+Comprehensive unit tests for components

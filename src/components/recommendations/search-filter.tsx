@@ -227,7 +227,7 @@ export function SearchFilter({ availableTags, onSearch, totalResults, currentCou
     </div>
 
       {/* Active Filters */}
-      {/* {hasActiveFilters && (
+      {hasActiveFilters && (
         <div className="flex flex-wrap gap-2">
           {filters.providers.map((provider) => (
             <Badge key={provider} variant="secondary" className="flex items-center space-x-1">
@@ -277,7 +277,7 @@ export function SearchFilter({ availableTags, onSearch, totalResults, currentCou
             </Badge>
           ))}
         </div>
-      )} */}
+      )}
     </div>
   )
 }
