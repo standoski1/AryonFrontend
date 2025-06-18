@@ -4,7 +4,7 @@ import React, { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { Menu } from "lucide-react"
+import { Archive, Menu } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
@@ -33,6 +33,7 @@ const navigation: NavigationItem[] = [
   { name: "Policies", href: "/policies", icon: ClipboardList },
   { name: "Events", href: "/events", icon: FileSearch2 },
   { name: "Waivers", href: "/waivers", icon: OctagonAlert },
+  { name: "Archive", href: "/recommendations/archive", icon: Archive },
 ]
 
 export function MobileSidebar() {
@@ -70,7 +71,7 @@ export function MobileSidebar() {
 
             <nav className="space-y-1">
               {navigation.map((item) => {
-                const isActive = pathname.startsWith(item.href)
+                const isActive = pathname.endsWith(item.href)
 
                 return (
                   <Link

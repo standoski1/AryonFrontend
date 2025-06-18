@@ -58,9 +58,9 @@ export function SearchFilter({ availableTags, onSearch, totalResults, currentCou
   return (
     <div className="space-y-4" data-testid="search-filter">
       {/* Search and Filter Row */}
-    <div className="flex flex-col md:flex-row items-center justify-between md:space-x-4">
-      <div className="w-[70%] flex flex-col md:flex-row items-stretch md:items-center space-y-2 md:space-y-0 md:space-x-4">
-        <div className="relative md:w-1/3 w-full">
+    <div className="flex flex-col md:flex-row justify-between md:space-x-4">
+      <div className="w-full md:w-[70%] flex flex-row items-stretch md:items-center space-y-2 md:space-y-0 md:space-x-4">
+        <div className="relative md:w-1/3 w-full max-md:mr-2">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
             data-testid="search-input"
@@ -71,7 +71,7 @@ export function SearchFilter({ availableTags, onSearch, totalResults, currentCou
           />
         </div>
 
-        <div className="flex items-center justify-between space-x-4">
+        <div className="flex items-center justify-between space-x-4 max-md:mt-[-8px]">
           <DropdownMenu open={isFilterOpen} onOpenChange={setIsFilterOpen}>
             <DropdownMenuTrigger asChild>
               <Button data-testid="filter-button" variant="outline" className="flex items-center space-x-2">
