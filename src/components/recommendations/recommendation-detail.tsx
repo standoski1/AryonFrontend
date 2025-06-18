@@ -49,7 +49,7 @@ export function RecommendationDetail({
                 <MultiCubeIcon className="w-8 h-10 text-white" alt="Recommendation Detail" />
               </div>
               <div className="flex-1 min-w-0">
-                <h2 className="text-base md:text-lg font-semibold text-foreground mb-1">{recommendation.title}</h2>
+                <h2 className="text-sm md:text-lg font-semibold text-foreground mb-1">{recommendation.title}</h2>
                 <div className="flex flex-col md:flex-row md:items-center md:space-x-3 space-y-1 md:space-y-0">
                   <div className="flex items-center space-x-1">
                     <span className="text-xs md:text-sm text-muted-foreground">Value score</span>
@@ -145,44 +145,43 @@ export function RecommendationDetail({
 
           {/* Impact Assessment */}
           <div className="mb-6">
-            <div className="flex items-center space-x-2 mb-4">
-              <BarChartIcon className="w-4 h-4 text-muted-foreground" alt="Impact" />
-              <h3 className="text-sm font-medium text-foreground">Impact Assessment</h3>
+            <div className="flex items-center space-x-2 mb-3 md:mb-4">
+              <BarChartIcon className="w-3 h-3 md:w-4 md:h-4 text-muted-foreground" alt="Impact" />
+              <h3 className="text-xs md:text-sm font-medium text-foreground">Impact Assessment</h3>
             </div>
 
-            <div className="ml-6 space-y-4">
-
+            <div className="ml-4 md:ml-6 space-y-3 md:space-y-4">
               {/* Violation Cards with Background and Border */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-muted/30 border border-border rounded-lg p-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                <div className="bg-muted/30 border border-border rounded-lg p-3 md:p-4">
                   <div className="flex items-center space-x-2 justify-between">
-                    <span>Overall</span>
-                    <div className="w-4 h-4 rounded-full bg-muted flex items-center justify-center">
-                      <OctagonAlert/>
+                    <span className="text-xs md:text-sm">Overall</span>
+                    <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-muted flex items-center justify-center">
+                      <OctagonAlert className="w-2 h-2 md:w-3 md:h-3"/>
                     </div>
                   </div>
                   <div className="flex flex-row items-center justify-between">
-                    <p className="text-xl font-bold text-foreground mb-1">Violations</p>
-                    <p className="text-3xl font-bold text-foreground">
+                    <p className="text-sm md:text-base font-bold text-foreground mb-1">Violations</p>
+                    <p className="text-xl md:text-2xl font-bold text-foreground">
                       {recommendation.impactAssessment.totalViolations}
                     </p>
                   </div>
                 </div>
-                <div className="bg-muted/30 border border-border rounded-lg p-4">
+                <div className="bg-muted/30 border border-border rounded-lg p-3 md:p-4">
                   <div className="flex items-center space-x-2 justify-between">
-                    <span>Most impacted scope</span>
-                    <TriangleIcon className="w-4 h-4 text-muted-foreground" alt="Warning" />
+                    <span className="text-xs md:text-sm">Most impacted scope</span>
+                    <TriangleIcon className="w-2 h-2 md:w-3 md:h-3 text-muted-foreground" alt="Warning" />
                   </div>
                   <div className="flex flex-row items-start justify-between">
                     <div>
-                    <p className="text-xl font-bold text-foreground mb-1">
-                    {recommendation.impactAssessment.mostImpactedScope.name}
-                    </p>
-                    <p className="text-xs text-muted-foreground mb-2">
-                      ({recommendation.impactAssessment.mostImpactedScope.type})
-                    </p>
+                      <p className="text-sm md:text-base font-bold text-foreground mb-1">
+                        {recommendation.impactAssessment.mostImpactedScope.name}
+                      </p>
+                      <p className="text-[10px] md:text-xs text-muted-foreground mb-2">
+                        ({recommendation.impactAssessment.mostImpactedScope.type})
+                      </p>
                     </div>
-                    <p className="text-3xl font-bold text-foreground">
+                    <p className="text-xl md:text-2xl font-bold text-foreground">
                       {recommendation.impactAssessment.mostImpactedScope.count}
                     </p>
                   </div>

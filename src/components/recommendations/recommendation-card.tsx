@@ -58,7 +58,7 @@ export function RecommendationCard({
                 <div className="flex-1 min-w-0">
                   <h3
                     className={cn(
-                      "text-lg font-semibold leading-tight",
+                      "text-sm md:text-lg font-semibold leading-tight",
                       isArchived ? "text-foreground/70 dark:text-foreground/80" : "text-foreground",
                     )}
                   >
