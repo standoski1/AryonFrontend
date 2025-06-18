@@ -34,7 +34,7 @@ export function SearchFilter({ availableTags, onSearch, totalResults, currentCou
     }, 300)
 
     return () => clearTimeout(timer)
-  }, [searchQuery])
+  }, [searchQuery, filters.search, onSearch, updateFilters])
 
   const handleFilterChange = (type: keyof typeof filters, value: string, checked: boolean) => {
     const currentValues = filters[type] as string[]
@@ -232,7 +232,7 @@ export function SearchFilter({ availableTags, onSearch, totalResults, currentCou
           {filters.providers.map((provider) => (
             <Badge key={provider} variant="secondary" className="flex items-center space-x-1">
               <span>
-                {PROVIDERS[Object.keys(PROVIDERS).find((key) => PROVIDERS[Number(key)].name === provider) as any]?.icon}
+                {Object.values(PROVIDERS).find(p => p.name === provider)?.icon}
               </span>
               <span>{provider}</span>
               <button

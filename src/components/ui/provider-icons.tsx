@@ -30,37 +30,37 @@ interface ProviderIconProps {
 }
 
 // Dashboard Icon - Using Lucide LayoutDashboard
-export function DashboardIcon({ className, alt = "Dashboard" }: IconProps) {
+export function DashboardIcon({ className }: IconProps) {
   return <LayoutDashboard className={cn("w-5 h-5", className)} />
 }
 
 // Star Icon - Using Lucide Star
-export function StarIcon({ className, alt = "Star" }: IconProps) {
+export function StarIcon({ className }: IconProps) {
   return <Star className={cn("w-5 h-5", className)} />
 }
 
 // Policies Icon - Using Lucide Shield (more appropriate for policies)
-export function PoliciesIcon({ className, alt = "Policies" }: IconProps) {
+export function PoliciesIcon({ className }: IconProps) {
   return <Shield className={cn("w-5 h-5", className)} />
 }
 
 // Events Icon - Using Lucide Calendar
-export function EventsIcon({ className, alt = "Events" }: IconProps) {
+export function EventsIcon({ className }: IconProps) {
   return <Calendar className={cn("w-5 h-5", className)} />
 }
 
 // Waivers Icon - Using Lucide Settings
-export function WaiversIcon({ className, alt = "Waivers" }: IconProps) {
+export function WaiversIcon({ className }: IconProps) {
   return <Settings className={cn("w-5 h-5", className)} />
 }
 
 // Warning Triangle Icon - Using Lucide AlertTriangle
-export function TriangleIcon({ className, alt = "Triangle" }: IconProps) {
+export function TriangleIcon({ className }: IconProps) {
   return <AlertTriangle className={cn("w-5 h-5", className)} />
 }
 
 // Single Cube Icon - Using Lucide Box
-export function CubeIcon({ className, alt = "Cube" }: IconProps) {
+export function CubeIcon({ className }: IconProps) {
   return <Box className={cn("w-6 h-6", className)} />
 }
 
@@ -70,7 +70,7 @@ export function MultiCubeIcon({ className, alt = "Multi Cube" }: IconProps) {
 }
 
 // Cloud Icon - Using Lucide Cloud
-export function CloudIcon({ className, alt = "Cloud" }: IconProps) {
+export function CloudIcon({ className }: IconProps) {
   return <Cloud className={cn("w-5 h-5", className)} />
 }
 
@@ -88,7 +88,7 @@ export function AwsLogoIcon({ className, alt = "AWS" }: IconProps) {
 }
 
 // Azure Icon - Custom SVG fallback (specific brand logo)
-export function AzureIcon({ className, alt = "Azure" }: IconProps) {
+export function AzureIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={cn("w-5 h-5", className)} fill="currentColor">
       <path d="M5.483 18.262h8.017L9.177 5.738 5.483 18.262zm13.034 0L13.6 5.738l-2.549 8.403 3.066 4.121h4.4z" />
@@ -97,23 +97,23 @@ export function AzureIcon({ className, alt = "Azure" }: IconProps) {
 }
 
 // Other utility icons - Using Lucide equivalents
-export function WarningTriangleIcon({ className, alt = "Warning" }: IconProps) {
+export function WarningTriangleIcon({ className }: IconProps) {
   return <AlertTriangle className={cn("w-5 h-5", className)} />
 }
 
-export function ClipboardIcon({ className, alt = "Clipboard" }: IconProps) {
+export function ClipboardIcon({ className }: IconProps) {
   return <Clipboard className={cn("w-5 h-5", className)} />
 }
 
-export function BookIcon({ className, alt = "Book" }: IconProps) {
+export function BookIcon({ className }: IconProps) {
   return <BookOpen className={cn("w-5 h-5", className)} />
 }
 
-export function LockIcon({ className, alt = "Lock" }: IconProps) {
+export function LockIcon({ className }: IconProps) {
   return <Lock className={cn("w-5 h-5", className)} />
 }
 
-export function BarChartIcon({ className, alt = "Bar Chart" }: IconProps) {
+export function BarChartIcon({ className }: IconProps) {
   return <BarChart3 className={cn("w-5 h-5", className)} />
 }
 

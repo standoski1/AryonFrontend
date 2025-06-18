@@ -19,7 +19,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       try {
         const parsedUser = JSON.parse(userData)
         setUser({ ...parsedUser, token })
-      } catch (error) {
+      } catch {
         localStorage.removeItem("aryon_token")
         localStorage.removeItem("aryon_user")
       }
