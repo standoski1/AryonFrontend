@@ -24,7 +24,6 @@ export function useRecommendations(isArchived = false) {
     classes: [],
   })
 
-  // Use ref to track previous filters to prevent unnecessary re-fetches
   const prevFiltersRef = useRef<string>("")
   const isInitialMount = useRef(true)
 
@@ -180,7 +179,6 @@ export function useRecommendations(isArchived = false) {
     [user?.token, router],
   )
 
-  // Only fetch when filters actually change and user is authenticated
   useEffect(() => {
     if (authLoading) return
     if (!user?.token) {

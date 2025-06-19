@@ -11,7 +11,6 @@ interface ProviderIconUtilsProps {
 }
 
 export function ProviderIconUtils({ 
-  providerIds, 
   className, 
   size = "md",
   isArchived = false 
@@ -22,7 +21,6 @@ export function ProviderIconUtils({
     lg: "w-8 h-8"
   }
 
-  // Use static cloud.png for all providers
   return (
     <div className="flex items-center space-x-2">
       <Image 
@@ -40,7 +38,6 @@ export function ProviderIconUtils({
   )
 }
 
-// Simplified cloud provider display component
 export function CloudProviderDisplay({ 
   className,
   isArchived = false 
@@ -82,7 +79,6 @@ export function ValueScoreBars({
   emptyBarClassName = "bg-[#d4d4d4]"
 }: ValueScoreBarsProps) {
   const getValueScoreBars = (score: number) => {
-    // Convert score (0-100) to number of filled bars (0-maxBars)
     const filledBars = Math.round((score / 100) * maxBars)
     return Array.from({ length: maxBars }, (_, i) => i < filledBars)
   }
@@ -102,7 +98,6 @@ export function ValueScoreBars({
   )
 }
 
-// Legacy ScoreBars component for backward compatibility
 interface ScoreBarsProps {
   score: number
   maxBars?: number

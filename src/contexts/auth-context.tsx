@@ -20,7 +20,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Check for stored auth token on mount
     const token = getCookie("aryon_token")
     const userData = getCookie("aryon_user")
 
@@ -38,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           // Token already expired
           logout()
         }
-      } catch (error) {
+      } catch {
         // Invalid token or user data
         logout()
       }
@@ -61,7 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
-        credentials: "include", // Important for cookie handling
+        credentials: "include",
       })
 
       if (response.ok) {
@@ -82,7 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       }
       return false
-    } catch (error) {
+    } catch {
       return false
     }
   }

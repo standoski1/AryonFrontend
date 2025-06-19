@@ -34,7 +34,6 @@ export function RecommendationDetail({
   const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Focus the close button when the modal opens
     if (closeButtonRef.current) {
       setInitialFocus(closeButtonRef.current)
     }
@@ -47,7 +46,7 @@ export function RecommendationDetail({
     }
 
     document.addEventListener('keydown', handleEscape)
-    document.body.style.overflow = 'hidden' // Prevent background scrolling
+    document.body.style.overflow = 'hidden'
 
     return () => {
       document.removeEventListener('keydown', handleEscape)

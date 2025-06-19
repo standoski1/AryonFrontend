@@ -1,6 +1,4 @@
-/**
- * Parse a JWT token and return its payload
- */
+
 export function parseJwt(token: string) {
   try {
     return JSON.parse(atob(token.split('.')[1]))
@@ -9,9 +7,6 @@ export function parseJwt(token: string) {
   }
 }
 
-/**
- * Check if a JWT token is expired
- */
 export function isTokenExpired(token: string): boolean {
   const payload = parseJwt(token)
   if (!payload?.exp) return true
