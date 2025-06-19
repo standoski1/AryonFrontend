@@ -1,8 +1,17 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
-import type { User, AuthContextType } from "@/types"
 import { API_URL } from "@/lib/config"
+import { getTimeUntilExpiry } from "@/lib/jwt"
+import { setCookie, getCookie, deleteCookie } from "@/lib/utils"
+import type { User } from "@/types"
+
+interface AuthContextType {
+  user: User | null
+  login: (username: string, password: string) => Promise<boolean>
+  logout: () => void
+  isLoading: boolean
+}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
@@ -12,19 +21,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // Check for stored auth token on mount
-    const token = localStorage.getItem("aryon_token")
-    const userData = localStorage.getItem("aryon_user")
+    const token = getCookie("aryon_token")
+    const userData = getCookie("aryon_user")
+
+    let cleanupTimer: NodeJS.Timeout | null = null
 
     if (token && userData) {
       try {
         const parsedUser = JSON.parse(userData)
-        setUser({ ...parsedUser, token })
-      } catch {
-        localStorage.removeItem("aryon_token")
-        localStorage.removeItem("aryon_user")
+        const timeUntilExpiry = getTimeUntilExpiry(token)
+
+        if (timeUntilExpiry > 0) {
+          setUser({ ...parsedUser, token })
+          cleanupTimer = setTimeout(logout, timeUntilExpiry)
+        } else {
+          // Token already expired
+          logout()
+        }
+      } catch (error) {
+        // Invalid token or user data
+        logout()
       }
     }
+    
     setIsLoading(false)
+
+    return () => {
+      if (cleanupTimer) {
+        clearTimeout(cleanupTimer)
+      }
+    }
   }, [])
 
   const login = async (username: string, password: string): Promise<boolean> => {
@@ -35,6 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
+        credentials: "include", // Important for cookie handling
       })
 
       if (response.ok) {
@@ -45,25 +72,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           token: data.token,
         }
 
-        setUser(userData)
-        localStorage.setItem("aryon_token", data.token)
-        localStorage.setItem("aryon_user", JSON.stringify({ id: "1", username }))
-        return true
+        const timeUntilExpiry = getTimeUntilExpiry(data.token)
+        if (timeUntilExpiry > 0) {
+          setUser(userData)
+          setCookie("aryon_token", data.token)
+          setCookie("aryon_user", JSON.stringify({ id: "1", username }))
+          setTimeout(logout, timeUntilExpiry)
+          return true
+        }
       }
       return false
     } catch (error) {
-      console.error("Login error:", error)
       return false
     }
   }
 
   const logout = () => {
     setUser(null)
-    localStorage.removeItem("aryon_token")
-    localStorage.removeItem("aryon_user")
+    deleteCookie("aryon_token")
+    deleteCookie("aryon_user")
   }
 
-  return <AuthContext.Provider value={{ user, login, logout, isLoading }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ user, login, logout, isLoading }}>
+      <div role="status" aria-live="polite" className="sr-only">
+        {isLoading ? "Checking authentication..." : user ? "Authenticated" : "Not authenticated"}
+      </div>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export function useAuth() {

@@ -1,14 +1,16 @@
 "use client"
 
 import { useState, useEffect, useCallback, useRef } from "react"
+import { useRouter } from "next/navigation"
 import type { Recommendation, AvailableTags } from "@/types"
 import { useAuth } from "@/contexts/auth-context"
 import { useFilters } from "@/contexts/filter-context"
-import { API_URL } from "@/lib/config"
+import { API_URL, ENDPOINTS } from "@/lib/config"
 
 export function useRecommendations(isArchived = false) {
-  const { user } = useAuth()
+  const { user, isLoading: authLoading } = useAuth()
   const { filters } = useFilters()
+  const router = useRouter()
   const [recommendations, setRecommendations] = useState<Recommendation[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -28,7 +30,10 @@ export function useRecommendations(isArchived = false) {
 
   const fetchRecommendations = useCallback(
     async (reset = false, customCursor?: string | null) => {
-      if (!user?.token) return
+      if (!user?.token) {
+        router.push("/login")
+        return
+      }
 
       setLoading(true)
       setError(null)
@@ -49,16 +54,18 @@ export function useRecommendations(isArchived = false) {
 
         const endpoint = isArchived
           ? `${API_URL}/recommendations/archive?${params.toString()}`
-          : `${API_URL}/recommendations?${params.toString()}`;
+          : `${API_URL}${ENDPOINTS.recommendations}?${params.toString()}`
 
         const response = await fetch(endpoint, {
           headers: {
             Authorization: `Bearer ${user.token}`,
+            'Content-Type': 'application/json',
           },
+          credentials: 'include',
         })
 
         if (!response.ok) {
-          throw new Error("Failed to fetch recommendations")
+          throw new Error(`Failed to fetch recommendations: ${response.status} ${response.statusText}`)
         }
 
         const data = await response.json()
@@ -77,7 +84,7 @@ export function useRecommendations(isArchived = false) {
         setTotalItems(data.pagination && typeof data.pagination.totalItems === 'number' ? data.pagination.totalItems : 0)
         setAvailableTags(data.availableTags || { frameworks: [], reasons: [], providers: [], classes: [] })
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred")
+        setError(err instanceof Error ? err.message : "An error occurred while fetching recommendations")
       } finally {
         setLoading(false)
       }
@@ -92,6 +99,7 @@ export function useRecommendations(isArchived = false) {
       filters.reasons,
       isArchived,
       recommendations,
+      router,
     ],
   )
 
@@ -110,53 +118,75 @@ export function useRecommendations(isArchived = false) {
 
   const archiveRecommendation = useCallback(
     async (id: string) => {
-      if (!user?.token) return
+      if (!user?.token) {
+        router.push("/login")
+        return
+      }
 
       try {
-        const response = await fetch(`${API_URL}/recommendations/${id}/archive`, {
+        const response = await fetch(`${API_URL}${ENDPOINTS.archive(id)}`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${user.token}`,
+            'Content-Type': 'application/json',
           },
+          credentials: 'include',
         })
+
+        if (!response.ok) {
+          throw new Error(`Failed to archive recommendation: ${response.status} ${response.statusText}`)
+        }
 
         if (response.ok) {
           setRecommendations((prev) => prev.filter((rec) => rec.recommendationId !== id))
         }
       } catch (err) {
-        console.error("Failed to archive recommendation:", err)
+        setError(err instanceof Error ? err.message : "Failed to archive recommendation")
         throw err
       }
     },
-    [user?.token],
+    [user?.token, router],
   )
 
   const unarchiveRecommendation = useCallback(
     async (id: string) => {
-      if (!user?.token) return
+      if (!user?.token) {
+        router.push("/login")
+        return
+      }
 
       try {
-        const response = await fetch(`${API_URL}/recommendations/${id}/unarchive`, {
+        const response = await fetch(`${API_URL}${ENDPOINTS.unarchive(id)}`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${user.token}`,
+            'Content-Type': 'application/json',
           },
+          credentials: 'include',
         })
+
+        if (!response.ok) {
+          throw new Error(`Failed to unarchive recommendation: ${response.status} ${response.statusText}`)
+        }
 
         if (response.ok) {
           setRecommendations((prev) => prev.filter((rec) => rec.recommendationId !== id))
         }
       } catch (err) {
-        console.error("Failed to unarchive recommendation:", err)
+        setError(err instanceof Error ? err.message : "Failed to unarchive recommendation")
         throw err
       }
     },
-    [user?.token],
+    [user?.token, router],
   )
 
-  // Only fetch when filters actually change
+  // Only fetch when filters actually change and user is authenticated
   useEffect(() => {
-    if (!user?.token) return
+    if (authLoading) return
+    if (!user?.token) {
+      router.push("/login")
+      return
+    }
 
     const currentFiltersString = JSON.stringify({
       search: filters.search,
@@ -182,6 +212,7 @@ export function useRecommendations(isArchived = false) {
     fetchRecommendations(true, null)
   }, [
     user?.token,
+    authLoading,
     filters.search,
     filters.frameworks,
     filters.providers,
@@ -189,6 +220,7 @@ export function useRecommendations(isArchived = false) {
     filters.reasons,
     isArchived,
     fetchRecommendations,
+    router,
   ])
 
   return {
